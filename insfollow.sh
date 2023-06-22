@@ -1,7 +1,7 @@
 #!/bin/bash
-# insfollow v2.0
-# recoded by: Termux Professor
-# github.com/termuxprofessor/insfollow
+# insboost v3.0
+# recoded by: resonex
+# github.com/resonex
 # If you use any part from this code, give me the credits, please, read the License
 
 clear
@@ -21,17 +21,14 @@ ig_sig="4f8732eb9ba7d1c8e8897a75d6474d4eb3f5279137431b2aafb71fafe2abe178"
 
 
 banner() {
-echo ""
+echo -e "\e[95m
 
-echo -e "\e[1;91m ═╦═\e[1;92m┌─┐ ┌┌──┐\e[1;91m╔══╗\e[1;92m┌──┐┬   ┬   ┌──┐┬ ┬ ┬"
-
-echo -e "\e[1;91m  ║ \e[1;92m│ │ ││   \e[1;91m║   \e[1;92m│  ││   │   │  ││ │ │"
-
-echo -e "\e[1;91m  ║ \e[1;92m│ │ │└──┐\e[1;91m╠═╣ \e[1;92m│  ││   │   │  ││ │ │"
-
-echo -e "\e[1;91m  ║ \e[1;92m┘ └─┘└──┘\e[1;91m║   \e[1;92m└──┘┴──┘┴──┘└──┘└─┴─┘"
-
-echo -e "\e[1;91m ═╩═\e[1;92m         \e[1;91m╩   by - \e[1;92mTermux Professor"
+ _           _                     _   
+(_)_ __  ___| |__   ___   ___  ___| |_ 
+| | '_ \/ __| '_ \ / _ \ / _ \/ __| __|
+| | | | \__ \ |_) | (_) | (_) \__ \ |_ 
+|_|_| |_|___/_.__/ \___/ \___/|___/\__|
+                                          by - \e[1;92mcyber_snipper"
 
 }
 
@@ -160,8 +157,8 @@ printf "\e[1;77m[\e[0m\e[1;31m+\e[0m\e[1;77m] Saved:\e[0m\e[1;93m %s/videos/\e[0
 increase_followers() {
 
 printf "\n"
-printf "  \e[1;77m[\e[0m\e[1;31m+\e[0m\e[1;77m] This technique consists of following/unfolling celebgrams\e[0m\n"
-printf "  \e[1;77m[\e[0m\e[1;31m+\e[0m\e[1;77m] It can increase your followers up to about +30 in 1 hour \e[0m\n"
+printf "  \e[1;77m[\e[0m\e[1;31m+\e[0m\e[1;77m] This technique consists of snipping/unfolling celebgrams\e[0m\n"
+printf "  \e[1;77m[\e[0m\e[1;31m+\e[0m\e[1;77m] It can increase your followers up to about +300 in 1 hour \e[0m\n"
 printf "  \e[1;77m[\e[0m\e[1;31m+\e[0m\e[1;77m]\e[0m\e[1;93m Press Ctrl + C to stop \e[0m\n"
 printf "\n"
 sleep 5
@@ -205,18 +202,18 @@ for celeb in $(cat celeb_id); do
 
 data='{"_uuid":"'$guid'", "_uid":"'$username_id'", "user_id":"'$celeb'", "_csrftoken":"'$var2'"}'
 hmac=$(echo -n "$data" | openssl dgst -sha256 -hmac "${ig_sig}" | cut -d " " -f2)
-printf " \e[1;31m[\e[0m\e[1;77m+\e[0m\e[1;31m]\e[0m\e[1;93m Trying to follow celebgram %s ..." $celeb
+printf " \e[1;31m[\e[0m\e[1;77m+\e[0m\e[1;31m]\e[0m\e[1;93m Snipping Celebrity%s ..." $celeb
 
 check_follow=$(curl -s -L -b cookie.$user -d "ig_sig_key_version=4&signed_body=$hmac.$data" -s --user-agent 'User-Agent: "Instagram 10.26.0 Android (18/4.3; 320dpi; 720x1280; Xiaomi; HM 1SW; armani; qcom; en_US)"' -w "\n%{http_code}\n" -H "$header" "https://i.instagram.com/api/v1/friendships/create/$celeb/" | grep -o '"following": true')
 
 if [[ $check_follow == "a" ]]; then
 printf " \n\e[1;31m [!] Error\n"
-printf " \n\e[1;33m [::] There is problem in you instagram account\n"
+printf " \n\e[1;33m [::] There is problem in your instagram account\n"
 printf " \n\e[1;31m [:] Reason\n"
 printf " \n\e[1;33m - You have reached today's following/unfollowing limit of instagram\n."
 printf " \n\e[1;33m - You account is temporary banned by instagram\n"
 printf " \n\e[1;32m [:] Solution\n"
-printf " \n\e[1;33m - Don't follw or unfollow any in instagram for 24 hour then run script again it will work.\n"
+printf " \n\e[1;33m - Don't follw or unfollow any account for 24 hour then run script again it will work.\n"
 
 exit 1
 else
@@ -235,9 +232,9 @@ printf " \e[1;31m[\e[0m\e[1;77m+\e[0m\e[1;31m]\e[0m\e[1;93m Trying to unfollow c
 check_unfollow=$(curl -s -L -b cookie.$user -d "ig_sig_key_version=4&signed_body=$hmac.$data" -s --user-agent 'User-Agent: "Instagram 10.26.0 Android (18/4.3; 320dpi; 720x1280; Xiaomi; HM 1SW; armani; qcom; en_US)"' -w "\n%{http_code}\n" -H "$header" "https://i.instagram.com/api/v1/friendships/destroy/$celeb/" | grep -o '"following": false' )
 
 if [[ $check_unfollow == "a" ]]; then
-printf "\n \e[1;93m [!] Error, stoping to prevent blocking\n"
-printf " \e[1;33m [-] You reached today's limit. Try tomorrow again.\n"
-printf " \e[1;33m [-] We have set limit for prevent blockage of your instagram account.\n"
+printf "\n \e[1;93m [!] Error, stoping to prevent banning\n"
+printf " \e[1;33m [-] You reached today's limit. Try again in 12 hours.\n"
+printf " \e[1;33m [-] We have set limit for prevent banning of your instagram account.\n"
 exit 1
 else
 printf " \e[1;92mSuccess\e[0m\n"
